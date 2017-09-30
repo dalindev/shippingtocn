@@ -1,4 +1,4 @@
-## Instructions
+## Please don't download this, thanks LoL
 
 Please don't download this, thanks LoL <br />
 
