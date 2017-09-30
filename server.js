@@ -1,4 +1,5 @@
 // server.js
+var config = require('./config_key/conf.json');
 
 // set up ======================================================================
 // get all the tools we need
@@ -47,7 +48,7 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
 app.use(session({
-	secret: 'vidyapathaisalwaysrunning',
+	secret: config.session_secret,
 	resave: true,
 	saveUninitialized: true
  } )); // session secret
