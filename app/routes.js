@@ -70,6 +70,9 @@ module.exports = function(app, passport) {
 		*/
 
 		var args = {
+			path: {
+				"cp_customer_id": config.cp_customer_id
+			},
 			headers: {
 				"Accept": "application/vnd.cpc.ncshipment-v4+xml",
 				"Content-Type": "application/vnd.cpc.ncshipment-v4+xml"
@@ -122,7 +125,7 @@ module.exports = function(app, passport) {
 
 		// console.log('req query-->' + args);
 		// call Canada post API now
-		client.post("https://ct.soa-gw.canadapost.ca/rs/0008574965/ncshipment",
+		client.post("https://ct.soa-gw.canadapost.ca/rs/${cp_customer_id}/ncshipment",
 					args,
 					function (data, response) {
 						// data - parsed response body as js object
@@ -137,11 +140,12 @@ module.exports = function(app, passport) {
 	// -------------------------------------
 	// Get All Non-ContractShipment Links
 	app.get('/api/v1/canadapost/ncshipment/self/:shipmentid', function (req, res) {
-		console.log('req.params.shipmentid--->' + req.params.shipmentid);
+		console.log('req.params.shipmentid--->' + config.cp_customer_id);
 		if(req.params.shipmentid){
 			var args = {
 				path: {
-					"shipmentid": req.params.shipmentid
+					"shipmentid": req.params.shipmentid,
+					"cp_customer_id": config.cp_customer_id
 				},
 				headers: {
 					"Accept": "application/vnd.cpc.ncshipment-v4+xml",
@@ -149,7 +153,7 @@ module.exports = function(app, passport) {
 				}
 			};
 			// call Canada post API now
-			client.get("https://ct.soa-gw.canadapost.ca/rs/0008574965/ncshipment/${shipmentid}",
+			client.get("https://ct.soa-gw.canadapost.ca/rs/${cp_customer_id}/ncshipment/${shipmentid}",
 						args,
 						function (data, response) {
 
@@ -166,7 +170,6 @@ module.exports = function(app, passport) {
 		} else {
 			res.end('missing shipment id');
 		}
-
 	});
 
 	/* ------------------------------------------------------- */
