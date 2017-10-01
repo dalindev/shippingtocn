@@ -45,7 +45,9 @@ module.exports = function(app, passport) {
 						function (data, response) {
 							// data - parsed response body as js object
 							// response - raw response
-							res.end(data);
+							if(response.statusCode === 200){
+								res.end(data);
+							}
 						});
 		} else {
 			res.end('missing data to call postoffice');
@@ -53,8 +55,9 @@ module.exports = function(app, passport) {
 
 	});
 
+	// -------------------------------------
 	// Create Non-Contract Shipment – REST
-	app.get('/api/v1/canadapost/ncshipment', function (req, res) {
+	app.get('/api/v1/canadapost/ncshipment/create', function (req, res) {
 
 		/*
 			Service-Code	|	Description
@@ -119,17 +122,52 @@ module.exports = function(app, passport) {
 
 		// console.log('req query-->' + args);
 		// call Canada post API now
-		client.post("https://ct.soa-gw.canadapost.ca/rs/8574965/ncshipment",
+		client.post("https://ct.soa-gw.canadapost.ca/rs/0008574965/ncshipment",
 					args,
 					function (data, response) {
 						// data - parsed response body as js object
 						// response - raw response
-						res.end(data);
+						if(response.statusCode === 200){
+							res.end(data);
+						}
 					});
 
 	});
 
+	// -------------------------------------
+	// Get All Non-ContractShipment Links
+	app.get('/api/v1/canadapost/ncshipment/self/:shipmentid', function (req, res) {
+		console.log('req.params.shipmentid--->' + req.params.shipmentid);
+		if(req.params.shipmentid){
+			var args = {
+				path: {
+					"shipmentid": req.params.shipmentid
+				},
+				headers: {
+					"Accept": "application/vnd.cpc.ncshipment-v4+xml",
+					"Content-Type": "application/vnd.cpc.ncshipment-v4+xml"
+				}
+			};
+			// call Canada post API now
+			client.get("https://ct.soa-gw.canadapost.ca/rs/0008574965/ncshipment/${shipmentid}",
+						args,
+						function (data, response) {
 
+							// data - parsed response body as js object
+							if(response.statusCode === 200){
+								res.end(data);
+							} else {
+								console.log('Can not find this shipment id!');
+								res.end('Can not find this shipment id!');
+							}
+						}).on('error', function (err) {
+				console.log('something went wrong on the request -> ' + err);
+			});
+		} else {
+			res.end('missing shipment id');
+		}
+
+	});
 
 	/* ------------------------------------------------------- */
 	app.get('/alladdresses', isLoggedIn, function (req, res) {
@@ -448,6 +486,11 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
+	// Handle 404 - Keep this as a last route
+	// app.use(function(req, res, next) {
+	// 	res.status(400);
+	// 	res.send('404: File Not Found');
+	// });
 
 	// END API =====================================
 };
