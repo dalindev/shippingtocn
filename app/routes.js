@@ -4,8 +4,65 @@ var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
 const uuidv4 = require('uuid/v4');
 
+var config = require('../config_key/conf.json');
+// REST API
+var Client = require('node-rest-client').Client;
+// configure basic http auth for every request
+var options_auth = { user: config.canadapost_username, password: config.canadapost_password };
+var client = new Client(options_auth);
+
+var parseString = require('xml2js').parseString;
 // app/routes.js
 module.exports = function(app, passport) {
+
+	//  ======================================================================
+	// API ===================================================================
+
+
+	/* -------------------------------------------------------
+		Canada Post API
+	------------------------------------------------------- */
+	app.get('/api/v1/postoffice', function (req, res) {
+
+		console.log('req-->' + JSON.stringify(req.body));
+
+		var d2po_args = {
+			// path: { "d2po": true, "postalCode": "postalCode", "maximum": "maximum" }//,
+			headers: { "Accept": "application/vnd.cpc.postoffice+xml" }
+		};
+
+		// call Canada post API now
+		client.get("https://ct.soa-gw.canadapost.ca/rs/postoffice?d2po=true&postalCode=K4M0H2&maximum=1", d2po_args, function (data, response) {
+			// parsed response body as js object
+			console.log('postoffice-->' + data);
+			// raw response
+			console.log('postoffice-->' + response);
+
+			// parseString(response, function (err, result) {
+			//     console.dir(result);
+			// });
+
+			var xml = "<root>Hello xml2js!</root>"
+			parseString(xml, function (err, result) {
+			    console.dir(result);
+
+				res.end();
+			});
+
+
+		});
+
+	});
+
+
+	app.get('/alladdresses', isLoggedIn, function (req, res) {
+		console.log(req);
+		connection.query('SELECT * FROM addresses', function (error, results, fields) {
+			if (error) throw error;
+			res.end(JSON.stringify(results));
+		 });
+	});
+
 
 	// =====================================
 	// HOME PAGE (with login links) ========
@@ -305,25 +362,6 @@ module.exports = function(app, passport) {
 		res.redirect('/profile');
 	});
 
-
-
-	// API ======================================================================
-	//rest api to get all results
-	// app.get('/allusers', isLoggedIn, function (req, res) {
-	// 	console.log(req);
-	// 	connection.query('SELECT * FROM users', function (error, results, fields) {
-	// 		if (error) throw error;
-	// 		res.end(JSON.stringify(results));
-	// 	 });
-	// });
-
-	app.get('/alladdresses', isLoggedIn, function (req, res) {
-		console.log(req);
-		connection.query('SELECT * FROM addresses', function (error, results, fields) {
-			if (error) throw error;
-			res.end(JSON.stringify(results));
-		 });
-	});
 
 	// =====================================
 	// LOGOUT ==============================

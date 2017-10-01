@@ -14,7 +14,6 @@ var port     = process.env.PORT || 8080;
 var passport = require('passport');
 var flash    = require('connect-flash');
 
-
 // Database
 var mysql    = require('mysql');
 var dbconfig = require('./config/database');
@@ -28,7 +27,6 @@ connection.connect(function(err) {
 
 // configuration ===============================================================
 // connect to our database
-
 require('./config/passport')(passport); // pass passport for configuration
 
 
@@ -57,8 +55,11 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 
-// routes ======================================================================
+/* -------------------------------------------
+	API
+------------------------------------------- */
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
 
 // launch ======================================================================
 //app.listen(port);
