@@ -24,10 +24,10 @@ module.exports = function(app, passport) {
 		Canada Post API
 	------------------------------------------------------- */
 	// Get Nearest Post Office
-	app.get('/api/v1/postoffice', function (req, res) {
+	app.get('/api/v1/canadapost/postoffice', function (req, res) {
 
 		if(req.query.d2po && req.query.postalCode && req.query.maximum){
-			var d2po_args = {
+			var args = {
 				path: {
 					"d2po": req.query.d2po,
 					"postalCode": req.query.postalCode,
@@ -38,10 +38,10 @@ module.exports = function(app, passport) {
 				}
 			};
 
-			console.log('req query-->' + d2po_args.path);
+			console.log('req query-->' + args.path);
 			// call Canada post API now
 			client.get("https://ct.soa-gw.canadapost.ca/rs/postoffice?d2po=${d2po}&postalCode=${postalCode}&maximum=${maximum}",
-						d2po_args,
+						args,
 						function (data, response) {
 							// data - parsed response body as js object
 							// response - raw response
@@ -50,6 +50,82 @@ module.exports = function(app, passport) {
 		} else {
 			res.end('missing data to call postoffice');
 		}
+
+	});
+
+	// Create Non-Contract Shipment – REST
+	app.get('/api/v1/canadapost/ncshipment', function (req, res) {
+
+		/*
+			Service-Code	|	Description
+			---------------------------
+			Domestic
+			DOM.RP				Regular Parcel
+			DOM.EP				Expedited Parcel
+			DOM.XP				Xpresspost
+			DOM.PC				Priority
+		*/
+
+		var args = {
+			headers: {
+				"Accept": "application/vnd.cpc.ncshipment-v4+xml",
+				"Content-Type": "application/vnd.cpc.ncshipment-v4+xml"
+			},
+			data: '<?xml version="1.0" encoding="utf-8"?> \
+						<non-contract-shipment xmlns="http://www.canadapost.ca/ws/ncshipment-v4"> \
+							<requested-shipping-point>J8R1A2</requested-shipping-point> \
+							<delivery-spec> \
+								<service-code>DOM.RP</service-code> \
+								<sender> \
+									<company>Canada Post Corporation</company> \
+									<contact-phone>555-555-5555</contact-phone> \
+									<address-details> \
+										<address-line-1>2701 Riverside Drive</address-line-1> \
+										<city>Ottawa</city> \
+										<prov-state>ON</prov-state> \
+										<postal-zip-code>K1A0B1</postal-zip-code> \
+									</address-details> \
+								</sender> \
+								<destination> \
+									<name>John Doe</name> \
+									<company>Consumer</company> \
+									<address-details> \
+										<address-line-1>2701 Receiver Drive</address-line-1> \
+										<city>Ottawa</city> \
+										<prov-state>ON</prov-state> \
+										<country-code>CA</country-code> \
+										<postal-zip-code>K1A0B1</postal-zip-code> \
+									</address-details> \
+								</destination> \
+								<options> \
+									<option> \
+										<option-code>DC</option-code> \
+									</option> \
+								</options> \
+								<parcel-characteristics> \
+									<weight>15</weight> \
+									<dimensions> \
+										<length>1</length> \
+										<width>1</width> \
+										<height>1</height> \
+									</dimensions> \
+								</parcel-characteristics> \
+								<preferences> \
+									<show-packing-instructions>true</show-packing-instructions> \
+								</preferences> \
+							</delivery-spec> \
+						</non-contract-shipment>'
+		};
+
+		// console.log('req query-->' + args);
+		// call Canada post API now
+		client.post("https://ct.soa-gw.canadapost.ca/rs/8574965/ncshipment",
+					args,
+					function (data, response) {
+						// data - parsed response body as js object
+						// response - raw response
+						res.end(data);
+					});
 
 	});
 
