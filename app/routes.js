@@ -10,8 +10,9 @@ var Client = require('node-rest-client').Client;
 // configure basic http auth for every request
 var options_auth = { user: config.canadapost_username, password: config.canadapost_password };
 var client = new Client(options_auth);
+client.serializers.find("XML").options={"renderOpts":{"pretty": true }};
 
-var parseString = require('xml2js').parseString;
+
 // app/routes.js
 module.exports = function(app, passport) {
 
@@ -22,39 +23,39 @@ module.exports = function(app, passport) {
 	/* -------------------------------------------------------
 		Canada Post API
 	------------------------------------------------------- */
+	// Get Nearest Post Office
 	app.get('/api/v1/postoffice', function (req, res) {
 
-		console.log('req-->' + JSON.stringify(req.body));
+		if(req.query.d2po && req.query.postalCode && req.query.maximum){
+			var d2po_args = {
+				path: {
+					"d2po": req.query.d2po,
+					"postalCode": req.query.postalCode,
+					"maximum": req.query.maximum
+				},
+				headers: {
+					"Accept": "application/vnd.cpc.postoffice+xml"
+				}
+			};
 
-		var d2po_args = {
-			// path: { "d2po": true, "postalCode": "postalCode", "maximum": "maximum" }//,
-			headers: { "Accept": "application/vnd.cpc.postoffice+xml" }
-		};
-
-		// call Canada post API now
-		client.get("https://ct.soa-gw.canadapost.ca/rs/postoffice?d2po=true&postalCode=K4M0H2&maximum=1", d2po_args, function (data, response) {
-			// parsed response body as js object
-			console.log('postoffice-->' + data);
-			// raw response
-			console.log('postoffice-->' + response);
-
-			// parseString(response, function (err, result) {
-			//     console.dir(result);
-			// });
-
-			var xml = "<root>Hello xml2js!</root>"
-			parseString(xml, function (err, result) {
-			    console.dir(result);
-
-				res.end();
-			});
-
-
-		});
+			console.log('req query-->' + d2po_args.path);
+			// call Canada post API now
+			client.get("https://ct.soa-gw.canadapost.ca/rs/postoffice?d2po=${d2po}&postalCode=${postalCode}&maximum=${maximum}",
+						d2po_args,
+						function (data, response) {
+							// data - parsed response body as js object
+							// response - raw response
+							res.end(data);
+						});
+		} else {
+			res.end('missing data to call postoffice');
+		}
 
 	});
 
 
+
+	/* ------------------------------------------------------- */
 	app.get('/alladdresses', isLoggedIn, function (req, res) {
 		console.log(req);
 		connection.query('SELECT * FROM addresses', function (error, results, fields) {
