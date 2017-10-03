@@ -5,13 +5,12 @@
 <head>
 	<title>中加快递</title>
 	<%- include('header.ejs') %>
-	<%- include('animation-shipping.ejs') %>
+		<%- include('animation-shipping.ejs') %>
 </head>
 
 <body>
 	<%- include('top-navbar.ejs', {user: user}); %>
-
-<!-- 	<div class="loop-wrapper">
+		<!-- 	<div class="loop-wrapper">
 		<div class="mountain"></div>
 		<div class="hill"></div>
 		<div class="tree"></div>
@@ -21,14 +20,25 @@
 		<div class="truck"></div>
 		<div class="wheels"></div>
 	</div> -->
-	<div class="container">
-		<div class="jumbotron text-center">
-			<h1>中加快递</h1>
+		<div class="container py-3">
+			<div class="row">
+				<div class="col-3">
+					<div class="list-group">
+						<a href="#" class="list-group-item list-group-item-action"><i class="fa fa-laptop" aria-hidden="true"></i> 在线下单</a>
+						<a href="#" class="list-group-item list-group-item-action"><i class="fa fa-laptop" aria-hidden="true"></i> 运费查询</a>
+						<a href="#" class="list-group-item list-group-item-action"><i class="fa fa-laptop" aria-hidden="true"></i> 新手上路</a>
+						<a href="#" class="list-group-item list-group-item-action"><i class="fa fa-laptop" aria-hidden="true"></i> 联系我们</a>
+						<a href="#" class="list-group-item list-group-item-action"><i class="fa fa-laptop" aria-hidden="true"></i> 帮助中心</a>
+					</div>
+				</div>
+				<div class="col-9">
+					<div class="jumbotron text-center">
+						<h1>中加快递</h1>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
-
-
-	<%- include('main-js.ejs') %>
+		<%- include('main-js.ejs') %>
 </body>
 
 </html>
