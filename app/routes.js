@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
 	});
 
 	// -------------------------------------
-	// Create Non-Contract Shipment – REST
+	// (Create) Non-Contract Shipment – REST
 	app.get('/api/v1/canadapost/ncshipment/create', function (req, res) {
 
 		/*
@@ -138,7 +138,7 @@ module.exports = function(app, passport) {
 	});
 
 	// -------------------------------------
-	// Get All Non-ContractShipment Links
+	// (self) Get All Non-ContractShipment Links
 	app.get('/api/v1/canadapost/ncshipment/self/:shipmentid', function (req, res) {
 		console.log('req.params.shipmentid--->' + config.cp_customer_id);
 		if(req.params.shipmentid){
