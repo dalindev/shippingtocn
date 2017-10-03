@@ -16,9 +16,19 @@ client.serializers.find("XML").options={"renderOpts":{"pretty": true }};
 // app/routes.js
 module.exports = function(app, passport) {
 
+
+
+
 	//  ======================================================================
 	// API ===================================================================
 
+	// =====================================
+	// Order-Online
+	app.get('/order-online/create', function(req, res) {
+		res.render('order-online-create.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
 
 	/* -------------------------------------------------------
 		Canada Post API
@@ -57,7 +67,7 @@ module.exports = function(app, passport) {
 
 	// -------------------------------------
 	// (Create) Non-Contract Shipment – REST
-	app.get('/api/v1/canadapost/ncshipment/create', function (req, res) {
+	app.post('/api/v1/canadapost/ncshipment/create', function (req, res) {
 
 		/*
 			Service-Code	|	Description

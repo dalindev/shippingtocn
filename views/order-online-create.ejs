@@ -1,0 +1,188 @@
+<!-- views/index.ejs -->
+<!doctype html>
+<html>
+
+<head>
+    <title>中加快递</title>
+    <%- include('header.ejs') %>
+        <%- include('animation-shipping.ejs') %>
+</head>
+
+<body>
+    <%- include('top-navbar.ejs', {user: user}); %>
+        <div class="container py-3">
+            <div class="row">
+                <div class="use_xiugai">
+                    <div class="bg_fahuodizhit">
+                        <div style="float:left;">确认发货地址</div>
+                    </div>
+                    <div class="bg_wddz">
+                        <div id="SendAdd">
+                            <div id="UpdatePanel2">
+                                <table id="wrAddr" align="center" border="0" cellpadding="3" cellspacing="1" style="border: 0px solid #3399FF;
+                            padding:12px 12px 12px 24px; border-collapse: separate" width="85%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="right" width="102">
+                                                发件人：
+                                            </td>
+                                            <td colspan="7">
+                                                <input name="txt_name" type="text" id="txt_name" class="input">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                公司名称：
+                                            </td>
+                                            <td colspan="7">
+                                                <input name="txt_company" type="text" id="txt_company" class="input">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                手机：
+                                            </td>
+                                            <td colspan="7">
+                                                <input name="txt_mobilephone" type="text" id="txt_mobilephone" class="input">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                国家/地区：
+                                            </td>
+                                            <td width="132">
+                                                <input name="txt_country" type="text" id="txt_country" size="13" class="input">
+                                            </td>
+                                            <td align="right" width="58">
+                                                省/州：
+                                            </td>
+                                            <td width="114">
+                                                <input name="txt_province" type="text" id="txt_province" size="13" class="input">
+                                            </td>
+                                            <td align="right" width="49">
+                                                城市：
+                                            </td>
+                                            <td width="114">
+                                                <input name="txt_city" type="text" id="txt_city" size="13" class="input">
+                                            </td>
+                                            <td align="right" width="81">
+                                                邮政编码：
+                                            </td>
+                                            <td width="91">
+                                                <input name="txt_postoffice" type="text" id="txt_postoffice" size="13" class="input">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">
+                                                地址：
+                                            </td>
+                                            <td colspan="7">
+                                                <input name="txt_address" type="text" id="txt_address" size="40" class="input">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">
+                                                Email：
+                                            </td>
+                                            <td colspan="7">
+                                                <input name="txt_email" type="text" id="txt_email" size="40" class="input">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg_fahuodizhit">
+                        收货人信息</div>
+                    <div class="bg_wddz">
+                        <div id="AddReceive">
+                            <table align="center" bgcolor="" border="0" cellpadding="3" cellspacing="1" style="border: 0px solid #3399FF;
+                            padding:12px 12px 12px 24px; border-collapse: separate" width="85%">
+                                <tbody>
+                                    <tr>
+                                        <td align="right" width="122">
+                                            收件人：
+                                        </td>
+                                        <td colspan="7">
+                                            <input name="txtRece_name" type="text" id="txtRece_name" class="input">
+                                        </td>
+                                    </tr>
+                                    <tr id="div_sfzfh1" style="display: none;">
+                                        <td align="right" valign="top">
+                                            身份证号：
+                                        </td>
+                                        <td colspan="7">
+                                            <input name="tbxIdentityCard" type="text" id="tbxIdentityCard" size="40" class="input">
+                                            <font color="red"><b>
+                                            <br>
+                                            </b></font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">
+                                            公司名称：
+                                        </td>
+                                        <td colspan="7">
+                                            <input name="txtRece_company" type="text" id="txtRece_company" class="input">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">
+                                            手机：
+                                        </td>
+                                        <td colspan="7">
+                                            <input name="txtRece_mobilephone" type="text" id="txtRece_mobilephone" class="input">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">
+                                            国家/地区：
+                                        </td>
+                                        <td width="132">
+                                            <select name="ddlRece_country" id="ddlRece_country" onchange="displaysfz();" class="input">
+                                                <option value="309">加拿大Canada</option>
+                                                <option value="34">中国China</option>
+                                                <option value="130">香港HongKong</option>
+                                            </select>
+                                        </td>
+                                        <td align="left" colspan="4">
+                                            省/州：
+                                            <input name="txtRece_province" type="text" id="txtRece_province" size="13" class="input" style="width: 80px;"> 城市：
+                                            <input name="txtRece_city" type="text" id="txtRece_city" size="13" class="input" style="width: 80px;"> 区：
+                                            <input name="txtqu" type="text" id="txtqu" size="13" class="input" style="width: 80px;">
+                                        </td>
+                                        <td align="right" width="81">
+                                            邮政编码：
+                                        </td>
+                                        <td width="91">
+                                            <input name="txtRece_postoffice" type="text" id="txtRece_postoffice" size="13" class="input" style="width: 80px;">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="top">
+                                            地址：
+                                        </td>
+                                        <td colspan="7">
+                                            <input name="txtRece_address" type="text" id="txtRece_address" size="40" class="input">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="top">
+                                            Email：
+                                        </td>
+                                        <td colspan="7">
+                                            <input name="txtRece_email" type="text" id="txtRece_email" size="40" class="input">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('main-js.ejs') %>
+</body>
+
+</html>
