@@ -7,7 +7,7 @@ var dbconfig = require('../config/database');
 
 var connection = mysql.createConnection(dbconfig.connection);
 
-connection.query('CREATE DATABASE ' + dbconfig.database);
+//connection.query('CREATE DATABASE ' + dbconfig.database);
 
 connection.query('\
 CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
@@ -25,8 +25,8 @@ CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
     `birth_day` DATE DEFAULT NULL, \
     `password` CHAR(64) NOT NULL, \
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    `deleted` TIMESTAMP, \
-    `suspended` TIMESTAMP, \
+    `removed` TIMESTAMP NULL, \
+    `suspended` TIMESTAMP NULL, \
     `modified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
         PRIMARY KEY (`id`), \
     UNIQUE INDEX `id_UNIQUE` (`id` ASC), \

@@ -63,7 +63,7 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 // launch ======================================================================
 //app.listen(port);
-var server = app.listen(port, "127.0.0.1", function () {
+var server = app.listen(port, "0.0.0.0", function () {
 
   let host = server.address().address
   let port = server.address().port

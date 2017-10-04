@@ -8,7 +8,7 @@ module.exports = {
         'password': config.dbPassword,
         'database': config.dbDatabase
     },
-	'database': 'shipping_ca',
+    'database': config.dbDatabase,
     'users_table': 'users',
     'addresses_table': 'addresses'
 };
