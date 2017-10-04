@@ -281,63 +281,55 @@ module.exports = function(app, passport) {
 	});
 
 	// =====================================
-	// ADD NEW ADDRESS PAGE
+	// PROFILE EDIT PAGE
 	// =====================================
-	app.get('/profile/address/add', isLoggedIn, function(req, res) {
-		res.render('profile-address-add.ejs', {
+	app.get('/profile/edit', isLoggedIn, function(req, res) {
+		res.render('profile-edit.ejs', {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
+	// PROFILE EDIT CALL
+	app.post("/profile/edit/:id", isLoggedIn, function(req, res, next) {
+        connection.query("SELECT * FROM users WHERE username = ?",[req.user.username], function(err, rows) {
+            if (err)
+                return next(err);
+            if (rows.length) {
+                var editUserMysql = {
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    city: req.body.city,
+                    prov: req.body.prov,
+                    country: req.body.country,
+                    postal_code: req.body.postal_code,
+                    username: req.user.username
+                };
 
-	// ADD NEW ADDRESS CALL
-	app.post("/profile/address/add/:id", isLoggedIn, function(req, res, next) {
-		console.log('req id' + JSON.stringify(req.body));
-		// make sure this user is valid
-		connection.query("SELECT * FROM users WHERE username = ?",[req.user.username], function(err, rows) {
-			if (err)
-				return next(err);
-			if (rows.length) {
-				var addressAddMysql = {
-					uuid: uuidv4(), // -> '110ec58a-a0f2-4ac4-8393-c866d813b8d1'
-					user_id: req.user.id,
-					primary_address: req.body.primary_address,
-					address_name: req.body.address_name,
-					country: req.body.country,
-					address: req.body.address,
-					address2: req.body.address2,
-					city: req.body.city,
-					prov: req.body.prov,
-					postal_code: req.body.postal_code,
-					phone: req.body.phone
-				};
+                var insertQuery = "UPDATE users SET firstname = ?, lastname = ?, email = ?, phone = ?, city = ?, prov = ?, country = ?, postal_code = ? WHERE username = ?";
 
-				var insertQuery = "INSERT INTO addresses ( uuid, user_id, primary_address, address_name, country, address, address2, city, prov, postal_code, phone ) values (?,?,?,?,?,?,?,?,?,?,?)";
-
-				connection.query(insertQuery,[
-												addressAddMysql.uuid,
-												addressAddMysql.user_id,
-												addressAddMysql.primary_address,
-												addressAddMysql.address_name,
-												addressAddMysql.country,
-												addressAddMysql.address,
-												addressAddMysql.address2,
-												addressAddMysql.city,
-												addressAddMysql.prov,
-												addressAddMysql.postal_code,
-												addressAddMysql.phone
-											],function(err, rows) {
-												if(err) console.log('error --------->'+err);
-												return next(null, addressAddMysql);
-											});
-			} else {
-				//can't find this user
-				return next(null, false, req.flash('profileAddressAddMessage', 'Error: Can not find this user'));
-			}
-		});
+                connection.query(insertQuery,[ 	editUserMysql.firstname,
+                                                editUserMysql.lastname,
+                                                editUserMysql.email,
+                                                editUserMysql.phone,
+                                                editUserMysql.city,
+                                                editUserMysql.prov,
+                                                editUserMysql.country,
+                                                editUserMysql.postal_code,
+                                                editUserMysql.username
+                                            ],function(err, rows) {
+                    editUserMysql.id = req.user.id;
+                    return next(null, editUserMysql);
+                });
+            } else {
+            	//can't find this user
+            	return next(null, false, req.flash('profileEditMessage', 'Error: Can not find this user'));
+            }
+        });
 	},
 	function(req, res) {
 		//call back
-		console.log("New address added");
+		console.log("user updated");
 		res.redirect('/profile');
 	});
 
@@ -398,7 +390,7 @@ module.exports = function(app, passport) {
 	},
 	function(req, res) {
 		//call back
-		console.log("Address Added");
+		console.log("New address added");
 		res.redirect('/profile');
 	});
 
