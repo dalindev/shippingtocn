@@ -5,10 +5,33 @@
 1. Create the database schema: `node scripts/create_database.js`
 1. Launch: `node server.js`
 1. Visit in your browser at: `http://localhost:8080`
+1. http://34.224.86.45:8080/
 
 
 
 ## DEV notes:<br>
+
+### Oct 5 2017
+* AWS: app is running, watching by PM2 (auto restart, node monitring)
+
+### Oct 4 2017
+* hotfix
+* update for AWS EC2
+* AWS: install PM2
+
+### Oct 3 2017
+* AWS setup. created 1 EC2 instance
+* AWS: install 6.10.1 Node.js
+* AWS: install git
+* AWS: install MySQL
+
+### Oct 2 2017
+* create order-online in-progress
+* home page updated (main menu), added folder for assets (css/js/img)
+* title/label updated to chinese
+
+### Oct 1 2017
+* moved Canada post customer id to config file
 
 ### Oct 1 2017
 * Added API /api/v1/postoffice (Get Nearest Post Office)
