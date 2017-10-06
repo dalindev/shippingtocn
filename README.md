@@ -32,8 +32,6 @@
 
 ### Oct 1 2017
 * moved Canada post customer id to config file
-
-### Oct 1 2017
 * Added API /api/v1/postoffice (Get Nearest Post Office)
 
 ### Sep 30 2017
@@ -64,8 +62,6 @@
 
 ### Sep 13 2017
 * add address page updated (form completed)
-
-### Sep 13 2017
 * profile-address-add page added
 
 ### Sep 11 2017
@@ -97,7 +93,6 @@
 ### Jul 28 2017
 * adding template (header and js lib)
 * header, top-navbar added
-
 
 ### Jul 27 2017
 * init (integrated MySQL, Express 4)
