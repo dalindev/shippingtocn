@@ -12,6 +12,9 @@
 
 ## DEV notes:<br>
 
+### Nov 15 2017
+* clean up, move style to main-style.css. upgrade bootstrap to v4 beta2
+
 ### Oct 5 2017
 * AWS: app is running, watching by PM2 (auto restart, node monitring)
 
