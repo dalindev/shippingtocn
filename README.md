@@ -7,7 +7,6 @@
   * `node scripts/create_tables.js`
 4. Launch: `node app.js`
 5. Visit in your browser at: `http://localhost:8080`
->>>>>>> 793e74068484467a4f341697b43b133049225791
 
 
 
