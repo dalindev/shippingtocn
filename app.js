@@ -25,6 +25,12 @@ connection.connect(function(err) {
 })
 
 
+/* -------------------------------------------
+	Public file
+------------------------------------------- */
+app.use(express.static(__dirname + '/public'));
+
+
 // configuration ===============================================================
 // connect to our database
 require('./config/passport')(passport); // pass passport for configuration

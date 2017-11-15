@@ -1,6 +1,6 @@
 {
   "name": "shipping",
-  "main": "server.js",
+  "main": "app.js",
   "version": "1.0.0",
   "scripts": {
     "start": "node ./server"
